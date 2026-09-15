@@ -1,0 +1,64 @@
+name: Feature or improvement
+description: Suggest a new capability, wrapper, or an improvement to an existing one
+title: "[Feature]: "
+labels: ["type: feature"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the suggestion. Describe what you'd like and why it would help.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: What are you trying to do that's hard or impossible today?
+      placeholder: There's no wrapper for markers, so I have to call the natives directly every time.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed API or behaviour
+      description: What would the ideal API look like? A rough sketch is fine.
+      placeholder: |
+        fx.markers.create({ coords, type, color })
+    validations:
+      required: true
+
+  - type: dropdown
+    id: side
+    attributes:
+      label: Which side?
+      options:
+        - client
+        - server
+        - shared
+        - not sure
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Which part of the framework does this touch?
+      options:
+        - entities / pools
+        - events / RPC
+        - world objects (blips, markers, etc.)
+        - player / vehicle
+        - math / shared
+        - tooling / docs
+        - other
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you've considered
+      description: Workarounds you're using now, or other approaches you thought about.
+    validations:
+      required: false
