@@ -2,6 +2,9 @@
 	"name": "@panda0day/f_framework",
 	"version": "0.2.0",
 	"type": "module",
+	"publishConfig": {
+		"access": "public"
+	},
 	"files": [
 		"dist"
 	],
