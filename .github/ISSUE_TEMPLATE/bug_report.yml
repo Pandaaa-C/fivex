@@ -1,0 +1,71 @@
+name: Bug report
+description: Something in the framework isn't working as expected
+title: "[Bug]: "
+labels: ["type: bug"]
+body:
+  - type: markdown
+    attributes:
+
+      value: |
+        Thanks for reporting a bug. Please fill in the details below so it can be reproduced.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug, and what you expected instead.
+      placeholder: When I call fx.objects.new(...) on the client, ...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: side
+    attributes:
+      label: Which side?
+      description: Which entry point does this involve?
+      options:
+        - client
+        - server
+        - shared
+        - not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Minimal steps or a code snippet that triggers it.
+      placeholder: |
+        1. Call fx.events.addNet('...', ...)
+        2. Emit from the client with ...
+        3. See error ...
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Framework version
+      description: The version of "@panda0day/fivex" you're on (see package.json).
+      placeholder: 0.3.1
+    validations:
+      required: true
+
+  - type: input
+    id: artifact
+    attributes:
+      label: FiveM artifact version
+      description: Your server's artifact/build number, if relevant.
+      placeholder: "12345"
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant console output
+      description: Any client (F8) or server console errors. This is automatically formatted as code.
+      render: shell
+    validations:
+      required: false
