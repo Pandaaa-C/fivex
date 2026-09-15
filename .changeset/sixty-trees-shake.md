@@ -1,5 +1,5 @@
 ---
-"@panda0day/f_framework": patch
+"@panda0day/fivex": patch
 ---
 
 fix: ship dist output
