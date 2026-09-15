@@ -1,7 +1,7 @@
 import { Player } from "../entities/player";
-import {Pool} from "../../shared/pool-base";
+import { ServerPool } from "./server-pool";
 
-export class PlayerPool extends Pool<Player>{
+export class PlayerPool extends ServerPool<Player> {
 	protected ids(): number[] {
 		return (getPlayers() as string[]).map(Number);
 	}

@@ -1,16 +1,16 @@
-import {Pool} from "../../shared/pool-base";
-import {Vehicle} from "../entities/vehicle";
+import { Vehicle } from "../entities/vehicle";
+import { ServerPool } from "./server-pool";
 
-export class VehiclePool extends Pool<Vehicle> {
-    protected ids(): number[] {
-        return GetAllVehicles() as number[];
-    }
+export class VehiclePool extends ServerPool<Vehicle> {
+	protected ids(): number[] {
+		return GetAllVehicles() as number[];
+	}
 
-    protected wrap(id: number): Vehicle {
-        return new Vehicle(id);
-    }
+	protected wrap(id: number): Vehicle {
+		return new Vehicle(id);
+	}
 
-    at(handle: number) {
-        return new Vehicle(handle);
-    }
+	at(handle: number) {
+		return new Vehicle(handle);
+	}
 }

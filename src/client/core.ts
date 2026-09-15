@@ -3,10 +3,10 @@ import { registerBlipHandlers } from "./blips-internal";
 import { LocalPlayer } from "./entities/local-player";
 import { registerInternalHandlers } from "./internal";
 import { EventManager } from "./managers/event-manager";
-import {ClientPlayerPool} from "./managers/player-pool";
-import {PedPool} from "./managers/ped-pool";
-import {VehiclePool} from "./managers/vehicle-pool";
-import {GameObjectPool} from "./managers/object-pool";
+import { GameObjectPool } from "./managers/object-pool";
+import { PedPool } from "./managers/ped-pool";
+import { ClientPlayerPool } from "./managers/player-pool";
+import { VehiclePool } from "./managers/vehicle-pool";
 
 export class Core {
 	readonly events = new EventManager();
@@ -15,7 +15,7 @@ export class Core {
 
 	// Pools
 	readonly players = new ClientPlayerPool();
-	readonly vehicles = new VehiclePool()
+	readonly vehicles = new VehiclePool();
 	readonly peds = new PedPool();
 	readonly objects = new GameObjectPool();
 

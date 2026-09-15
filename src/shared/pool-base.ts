@@ -1,39 +1,33 @@
 export abstract class Pool<T> {
-    protected abstract ids(): number[];
+	protected abstract ids(): number[];
 
-    protected abstract wrap(id: number): T;
+	protected abstract wrap(id: number): T;
 
-    toArray(): T[] {
-        return this.ids().map(this.wrap);
-    }
+	toArray(): T[] {
+		return this.ids().map(this.wrap);
+	}
 
-    get length(): number {
-        return this.ids().length;
-    }
+	get length(): number {
+		return this.ids().length;
+	}
 
-    forEach(fn: (item: T) => void): void {
-        for (const id of this.ids()) fn(this.wrap(id));
-    }
+	forEach(fn: (item: T) => void): void {
+		for (const id of this.ids()) fn(this.wrap(id));
+	}
 
-    map<R>(fn: (item: T) => R): R[] {
-        return this.toArray().map(fn);
-    }
+	map<R>(fn: (item: T) => R): R[] {
+		return this.toArray().map(fn);
+	}
 
-    filter(fn: (item: T) => boolean): T[] {
-        return this.toArray().filter(fn);
-    }
+	filter(fn: (item: T) => boolean): T[] {
+		return this.toArray().filter(fn);
+	}
 
-    find(fn: (item: T) => boolean): T | undefined {
-        for (const id of this.ids()) {
-            const item = this.wrap(id);
-            if (fn(item)) return item;
-        }
-        return undefined;
-    }
-
-    atNetId(netId: number): T | undefined {
-        if (!NetworkDoesNetworkIdExist(netId)) return undefined;
-        const handle = NetworkGetEntityFromNetworkId(netId);
-        return handle !== 0 ? this.wrap(handle) : undefined;
-    }
+	find(fn: (item: T) => boolean): T | undefined {
+		for (const id of this.ids()) {
+			const item = this.wrap(id);
+			if (fn(item)) return item;
+		}
+		return undefined;
+	}
 }
