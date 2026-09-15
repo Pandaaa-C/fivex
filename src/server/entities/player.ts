@@ -1,13 +1,10 @@
-import { Net, Vector3 } from "../../shared";
+import { type IVector3, Net, type Vector3 } from "../../shared";
 import { playerState } from "../internal/state";
 import { serverRpc } from "../managers/rpc";
-import { Entity } from "./entity";
 import { Ped } from "./ped";
 
-export class Player extends Entity {
-	constructor(public readonly source: number) {
-		super(source);
-	}
+export class Player {
+	constructor(public readonly source: number) {}
 
 	get name(): string {
 		return GetPlayerName(String(this.source));
@@ -22,11 +19,19 @@ export class Player extends Entity {
 	}
 
 	get rotation(): Vector3 {
-		return Vector3.from(GetEntityRotation(GetPlayerPed(String(this.source))));
+		return this.ped.rotation;
 	}
 
 	get heading(): number {
-		return GetEntityHeading(GetPlayerPed(String(this.source)));
+		return this.ped.heading;
+	}
+
+	get health(): number {
+		return this.ped.health;
+	}
+
+	get armour(): number {
+		return this.ped.armour;
 	}
 
 	get identifiers(): Record<string, string> {
@@ -43,41 +48,13 @@ export class Player extends Entity {
 		return out;
 	}
 
+	getIdentifier(prefix: string): string | undefined {
+		const key = prefix.endsWith(":") ? prefix.slice(0, -1) : prefix;
+		return this.identifiers[key];
+	}
+
 	get dimension(): number {
 		return GetPlayerRoutingBucket(String(this.source));
-	}
-
-	setHealth(value: number): void {
-		emitNet(Net.setHealth, this.source, value);
-	}
-
-	setArmour(value: number): void {
-		emitNet(Net.setArmour, this.source, value);
-	}
-
-	setPosition(v: Vector3): void {
-		emitNet(Net.setPosition, this.source, v.x, v.y, v.z);
-	}
-
-	setRotation(v: Vector3): void {
-		emitNet(Net.setRotation, this.source, v.x, v.y, v.z);
-	}
-
-	call(name: string, ...args: any[]): void {
-		emitNet(name, this.source, ...args);
-	}
-
-	drop(reason: string): void {
-		DropPlayer(String(this.source), reason);
-	}
-
-	getIdentifier(prefix: string): string | undefined {
-		const count = GetNumPlayerIdentifiers(String(this.source));
-		for (let i = 0; i < count; i++) {
-			const id = GetPlayerIdentifier(String(this.source), i);
-			if (id.startsWith(prefix)) return id;
-		}
-		return undefined;
 	}
 
 	set dimension(bucket: number) {
@@ -92,7 +69,31 @@ export class Player extends Entity {
 		playerState(String(this.source)).set(key, value, true);
 	}
 
+	setHealth(value: number): void {
+		emitNet(Net.setHealth, this.source, value);
+	}
+
+	setArmour(value: number): void {
+		emitNet(Net.setArmour, this.source, value);
+	}
+
+	setPosition(v: IVector3): void {
+		emitNet(Net.setPosition, this.source, v.x, v.y, v.z);
+	}
+
+	setRotation(v: IVector3): void {
+		emitNet(Net.setRotation, this.source, v.x, v.y, v.z);
+	}
+
+	call(name: string, ...args: any[]): void {
+		emitNet(name, this.source, ...args);
+	}
+
 	callProc<T = unknown>(name: string, ...args: unknown[]): Promise<T> {
 		return serverRpc.call<T>(this.source, name, args);
+	}
+
+	drop(reason: string): void {
+		DropPlayer(String(this.source), reason);
 	}
 }

@@ -6,10 +6,6 @@ export class LocalPlayer extends Ped {
 		super(PlayerPedId());
 	}
 
-	get handle(): number {
-		return PlayerPedId();
-	}
-
 	get serverId(): number {
 		return GetPlayerServerId(PlayerId());
 	}

@@ -1,5 +1,5 @@
 {
-	"name": "@panda0day/f_framework",
+	"name": "@panda0day/fivex",
 	"version": "0.2.0",
 	"type": "module",
 	"publishConfig": {
@@ -24,10 +24,12 @@
 	},
 	"scripts": {
 		"build": "tsc -p tsconfig.client.json && tsc -p tsconfig.server.json",
+		"prepare": "npm run build",
 		"typecheck": "tsc --noEmit -p tsconfig.client.json && tsc --noEmit -p tsconfig.server.json",
 		"lint": "biome check .",
 		"format": "biome check --write .",
-		"docs": "typedoc"
+		"docs": "typedoc",
+		"check": "npm run format && npm run typecheck && npm run build"
 	},
 	"peerDependencies": {
 		"@citizenfx/client": "*",

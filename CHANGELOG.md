@@ -1,4 +1,4 @@
-# @panda0day/f_framework
+# @panda0day/fivex
 
 ## 0.2.0
 
