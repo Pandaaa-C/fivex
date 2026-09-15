@@ -30,4 +30,10 @@ export abstract class Pool<T> {
         }
         return undefined;
     }
+
+    atNetId(netId: number): T | undefined {
+        if (!NetworkDoesNetworkIdExist(netId)) return undefined;
+        const handle = NetworkGetEntityFromNetworkId(netId);
+        return handle !== 0 ? this.wrap(handle) : undefined;
+    }
 }

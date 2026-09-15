@@ -1,5 +1,5 @@
-import {Vehicle} from "../../client";
 import {Pool} from "../../shared/pool-base";
+import {Vehicle} from "../entities/vehicle";
 
 export class VehiclePool extends Pool<Vehicle> {
     protected ids(): number[] {

@@ -1,59 +1,74 @@
 /// <reference types="@citizenfx/server" />
-import { Net, Vector3 } from "../../shared";
-import { entityState } from "../internal/state";
+import {IVector3, Vector3} from "../../shared";
+import {entityState} from "../internal/state";
 
 export class Entity {
-	constructor(public readonly handle: number) {}
+    constructor(public readonly handle: number) {
+    }
 
-	get position(): Vector3 {
-		return Vector3.from(GetEntityCoords(this.handle));
-	}
+    get netId(): number {
+        return NetworkGetNetworkIdFromEntity(this.handle);
+    }
 
-	get rotation(): Vector3 {
-		return Vector3.from(GetEntityCoords(this.handle));
-	}
+    get type(): number {
+        return GetEntityType(this.handle);
+    }
 
-	get heading(): number {
-		return GetEntityHeading(this.handle);
-	}
+    get position(): Vector3 {
+        return Vector3.from(GetEntityCoords(this.handle));
+    }
 
-	get dimension(): number {
-		return GetEntityRoutingBucket(this.handle);
-	}
+    set position(v: IVector3) {
+        SetEntityCoords(this.handle, v.x, v.y, v.z, false, false, false, false);
+    }
 
-	set dimension(bucket: number) {
-		SetEntityRoutingBucket(this.handle, bucket);
-	}
+    get rotation(): Vector3 {
+        return Vector3.from(GetEntityRotation(this.handle));
+    }
 
-	set position(position: Vector3) {
-		emitNet(Net.setPosition, position);
-	}
+    set rotation(v: IVector3) {
+        SetEntityRotation(this.handle, v.x, v.y, v.z, 2, true);
+    }
 
-	set rotation(rotation: Vector3) {
-		emitNet(Net.setRotation, rotation);
-	}
+    get heading(): number {
+        return GetEntityHeading(this.handle);
+    }
 
-	getVariable<T = unknown>(key: string): T | undefined {
-		return entityState(this.handle)[key] as T | undefined;
-	}
+    get health(): number {
+        return GetEntityHealth(this.handle);
+    }
 
-	setVariable(key: string, value: unknown): void {
-		entityState(this.handle).set(key, value, true);
-	}
+    set heading(v: number) {
+        SetEntityHeading(this.handle, v);
+    }
 
-	distance(position: Vector3) {
-		return this.position.distanceTo(position);
-	}
+    get dimension(): number {
+        return GetEntityRoutingBucket(this.handle);
+    }
 
-	distanceSquared(position: Vector3) {
-		return this.position.distanceToSquared(position);
-	}
+    set dimension(bucket: number) {
+        SetEntityRoutingBucket(this.handle, bucket);
+    }
 
-	get type() {
-		return GetEntityType(this.handle);
-	}
+    getVariable<T = unknown>(key: string): T | undefined {
+        return entityState(this.handle)[key] as T | undefined;
+    }
 
-	destroy() {
-		DeleteEntity(this.handle);
-	}
+    setVariable(key: string, value: unknown): void {
+        entityState(this.handle).set(key, value, true);
+    }
+
+    distance(to: Entity | IVector3): number {
+        const p = to instanceof Entity ? to.position : to;
+        return this.position.distanceTo(Vector3.from(p));
+    }
+
+    distanceSquared(to: Entity | IVector3): number {
+        const p = to instanceof Entity ? to.position : to;
+        return this.position.distanceToSquared(Vector3.from(p));
+    }
+
+    destroy(): void {
+        DeleteEntity(this.handle);
+    }
 }
