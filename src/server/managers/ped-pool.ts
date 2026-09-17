@@ -1,25 +1,25 @@
 import { type IVector3, Vector3 } from "../../shared";
-import { GameObject } from "../entities/object";
+import { Ped } from "../entities/ped";
 import { ServerPool } from "./server-pool";
 
-export class ObjectPool extends ServerPool<GameObject> {
+export class PedPool extends ServerPool<Ped> {
 	protected ids(): number[] {
-		return GetAllObjects() as number[];
+		return GetAllPeds() as number[];
 	}
 
-	protected wrap(id: number): GameObject {
-		return new GameObject(id);
+	protected wrap(id: number): Ped {
+		return new Ped(id);
 	}
 
 	at(handle: number) {
-		return new GameObject(handle);
+		return new Ped(handle);
 	}
 
-	getClosest(to: IVector3): GameObject | undefined {
+	getClosest(to: IVector3): Ped | undefined {
 		return this.getClosestBy(to, (p) => p.position);
 	}
 
-	getInRange(to: IVector3, radius: number): GameObject[] {
+	getInRange(to: IVector3, radius: number): Ped[] {
 		const origin = Vector3.from(to);
 		const r2 = radius * radius;
 
@@ -28,7 +28,7 @@ export class ObjectPool extends ServerPool<GameObject> {
 		);
 	}
 
-	getByModel(model: string | number): GameObject[] {
+	getByModel(model: string | number): Ped[] {
 		const hash = typeof model === "string" ? GetHashKey(model) : model;
 		return this.toArray().filter((v) => v.model === hash);
 	}
@@ -36,21 +36,21 @@ export class ObjectPool extends ServerPool<GameObject> {
 	new(
 		model: string | number,
 		position: IVector3,
+		heading: number,
 		isNetwork: boolean = true,
-		netMissionEntity: boolean = true,
-		doorFlag: boolean = true,
-	): GameObject | undefined {
+		bScriptHostPed: boolean = true,
+	) {
 		const hash = typeof model === "string" ? GetHashKey(model) : model;
-		const handle = CreateObject(
+		const handle = CreatePed(
+			0,
 			hash,
 			position.x,
 			position.y,
 			position.z,
+			heading,
 			isNetwork,
-			netMissionEntity,
-			doorFlag,
+			bScriptHostPed,
 		);
-
-		return handle !== 0 ? new GameObject(handle) : undefined;
+		return handle !== 0 ? new Ped(handle) : undefined;
 	}
 }

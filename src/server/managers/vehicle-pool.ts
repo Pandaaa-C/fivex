@@ -1,4 +1,4 @@
-import {IVector3, Vector3} from "../../shared";
+import { type IVector3, Vector3 } from "../../shared";
 import { Vehicle } from "../entities/vehicle";
 import { ServerPool } from "./server-pool";
 

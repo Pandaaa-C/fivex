@@ -58,9 +58,9 @@ export class Vehicle extends Entity {
 		return GetVehicleWindowTint(this.handle);
 	}
 
-    get model() {
-        return GetEntityModel(this.handle);
-    }
+	get model() {
+		return GetEntityModel(this.handle);
+	}
 
 	get colours(): [number, number] {
 		return GetVehicleColours(this.handle) as unknown as [number, number];
