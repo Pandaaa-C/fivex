@@ -1,6 +1,7 @@
 import { Vector3 } from "../shared";
 import { BlipManager } from "./blips";
 import { EventManager } from "./managers/event-manager";
+import { ObjectPool } from "./managers/object-pool";
 import { PlayerPool } from "./managers/player-pool";
 import { VehiclePool } from "./managers/vehicle-pool";
 
@@ -11,4 +12,5 @@ export class Core {
 	readonly blips = new BlipManager();
 
 	readonly vehicles = new VehiclePool();
+	readonly objects = new ObjectPool();
 }
