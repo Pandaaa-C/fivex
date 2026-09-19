@@ -3,7 +3,11 @@
 import { type IVector3, Vector3 } from "../../shared";
 
 export class Entity {
-	constructor(public readonly handle: number) {}
+	constructor(protected _handle: number) {}
+
+	get handle(): number {
+		return this._handle;
+	}
 
 	get exists(): boolean {
 		return DoesEntityExist(this.handle);
