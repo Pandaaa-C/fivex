@@ -1,5 +1,11 @@
 # @panda0day/fivex
 
+## 0.3.0
+
+### Minor Changes
+
+- 2af4093: added entities and pools
+
 ## 0.2.1
 
 ### Patch Changes
