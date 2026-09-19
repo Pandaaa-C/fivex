@@ -1,5 +1,11 @@
 # @panda0day/fivex
 
+## 0.3.1
+
+### Patch Changes
+
+- 24c93f5: fixed entity handle override
+
 ## 0.3.0
 
 ### Minor Changes
