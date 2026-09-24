@@ -1,7 +1,7 @@
 import { Vector3 } from "../shared";
-import { registerBlipHandlers } from "./blips-internal";
 import { LocalPlayer } from "./entities/local-player";
 import { registerInternalHandlers } from "./internal";
+import { BlipPool } from "./managers/blip-pool";
 import { ColShapePool } from "./managers/colshape-pool";
 import { EventManager } from "./managers/event-manager";
 import { GameObjectPool } from "./managers/object-pool";
@@ -20,9 +20,9 @@ export class Core {
 	readonly peds = new PedPool();
 	readonly objects = new GameObjectPool();
 	readonly colshapes = new ColShapePool();
+	readonly blips = new BlipPool();
 
 	constructor() {
 		registerInternalHandlers();
-		registerBlipHandlers();
 	}
 }
