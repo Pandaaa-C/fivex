@@ -1,44 +1,30 @@
 import { type BlipData, BlipNet } from "../../shared/blips";
 import { Blip } from "../entities/blip";
+import { ClientOrchestration } from "./orchestration";
 
-export class BlipPool {
-	private serverBlips = new Map<number, Blip>();
+export class BlipPool extends ClientOrchestration<BlipData, Blip> {
+	protected readonly net = BlipNet;
 
 	constructor() {
-		onNet(BlipNet.add, (d: BlipData) => this.applyServer(d));
-		onNet(BlipNet.sync, (list: BlipData[]) => {
-			list.forEach((d) => {
-				this.applyServer(d);
-			});
-		});
-		onNet(BlipNet.remove, (id: number) => {
-			const blip = this.serverBlips.get(id);
-			if (blip) {
-				blip.remove();
-				this.serverBlips.delete(id);
-			}
-		});
+		super();
+		this.register();
 	}
 
 	new(data: Omit<BlipData, "id">): Blip {
-		return this.draw(data);
+		return this.draw({ ...data, id: -1 } as BlipData);
 	}
 
-	private draw(data: Omit<BlipData, "id">): Blip {
-		const blip = new Blip(
-			AddBlipForCoord(data.coords.x, data.coords.y, data.coords.z),
-		);
-		if (data.sprite !== undefined) blip.sprite = data.sprite;
-		if (data.color !== undefined) blip.colour = data.color;
-		if (data.scale !== undefined) blip.scale = data.scale;
-		if (data.shortRange) blip.shortRange = true;
-		if (data.label) blip.label = data.label;
+	protected draw(d: BlipData): Blip {
+		const blip = new Blip(AddBlipForCoord(d.coords.x, d.coords.y, d.coords.z));
+		if (d.sprite !== undefined) blip.sprite = d.sprite;
+		if (d.color !== undefined) blip.colour = d.color;
+		if (d.scale !== undefined) blip.scale = d.scale;
+		if (d.shortRange) blip.shortRange = true;
+		if (d.label) blip.label = d.label;
 		return blip;
 	}
 
-	private applyServer(d: BlipData): void {
-		const existing = this.serverBlips.get(d.id);
-		if (existing) existing.remove();
-		this.serverBlips.set(d.id, this.draw(d));
+	protected erase(blip: Blip): void {
+		blip.remove();
 	}
 }
