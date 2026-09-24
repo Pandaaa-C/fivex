@@ -2,6 +2,7 @@ import { Vector3 } from "../shared";
 import { registerBlipHandlers } from "./blips-internal";
 import { LocalPlayer } from "./entities/local-player";
 import { registerInternalHandlers } from "./internal";
+import { ColShapePool } from "./managers/colshape-pool";
 import { EventManager } from "./managers/event-manager";
 import { GameObjectPool } from "./managers/object-pool";
 import { PedPool } from "./managers/ped-pool";
@@ -18,6 +19,7 @@ export class Core {
 	readonly vehicles = new VehiclePool();
 	readonly peds = new PedPool();
 	readonly objects = new GameObjectPool();
+	readonly colshapes = new ColShapePool();
 
 	constructor() {
 		registerInternalHandlers();
