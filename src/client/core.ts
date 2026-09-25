@@ -1,10 +1,14 @@
 import { Vector3 } from "../shared";
-import { registerBlipHandlers } from "./blips-internal";
 import { LocalPlayer } from "./entities/local-player";
 import { registerInternalHandlers } from "./internal";
+import { BlipPool } from "./managers/blip-pool";
+import { CheckpointPool } from "./managers/checkpoint-pool";
+import { ColShapePool } from "./managers/colshape-pool";
 import { EventManager } from "./managers/event-manager";
+import { LabelPool } from "./managers/label-pool";
 import { GameObjectPool } from "./managers/object-pool";
 import { PedPool } from "./managers/ped-pool";
+import { PickupPool } from "./managers/pickup-pool";
 import { ClientPlayerPool } from "./managers/player-pool";
 import { VehiclePool } from "./managers/vehicle-pool";
 
@@ -18,9 +22,13 @@ export class Core {
 	readonly vehicles = new VehiclePool();
 	readonly peds = new PedPool();
 	readonly objects = new GameObjectPool();
+	readonly colshapes = new ColShapePool();
+	readonly blips = new BlipPool();
+	readonly pickups = new PickupPool();
+	readonly checkpoints = new CheckpointPool();
+	readonly labels = new LabelPool();
 
 	constructor() {
 		registerInternalHandlers();
-		registerBlipHandlers();
 	}
 }
