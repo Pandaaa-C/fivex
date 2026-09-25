@@ -3,4 +3,5 @@ export const Net = {
 	setArmour: "__fx:setArmour",
 	setPosition: "__fx:setPosition",
 	setRotation: "__fx:setRotation",
+	vehicleOp: "__fx:veh:op",
 } as const;

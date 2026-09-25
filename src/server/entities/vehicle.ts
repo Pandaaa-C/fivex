@@ -1,13 +1,40 @@
 /// <reference types="@citizenfx/server" />
+
+import { Net } from "../../shared";
 import { Entity } from "./entity";
 
+type VehicleOp =
+	| "repair"
+	| "explode"
+	| "setMod"
+	| "toggleMod"
+	| "setNeon"
+	| "setNeonColour"
+	| "setLivery"
+	| "setEngineOn";
+
 export class Vehicle extends Entity {
+	private runOnOwner(op: VehicleOp, ...args: unknown[]): void {
+		const owner = NetworkGetEntityOwner(this.handle);
+		if (owner === -1) return;
+		emitNet(Net.vehicleOp, owner, this.netId, op, args);
+	}
+
 	get driver(): number {
 		return GetPedInVehicleSeat(this.handle, -1);
 	}
 
 	getPedInSeat(seat: number): number {
 		return GetPedInVehicleSeat(this.handle, seat);
+	}
+
+	getOccupants(maxSeats = 16): { seat: number; ped: number }[] {
+		const out: { seat: number; ped: number }[] = [];
+		for (let seat = -1; seat < maxSeats; seat++) {
+			const ped = GetPedInVehicleSeat(this.handle, seat);
+			if (ped !== 0) out.push({ seat, ped });
+		}
+		return out;
 	}
 
 	get bodyHealth(): number {
@@ -42,6 +69,10 @@ export class Vehicle extends Entity {
 		return GetVehicleTotalRepairs(this.handle);
 	}
 
+	get model(): number {
+		return GetEntityModel(this.handle);
+	}
+
 	get livery(): number {
 		return GetVehicleLivery(this.handle);
 	}
@@ -56,10 +87,6 @@ export class Vehicle extends Entity {
 
 	get windowTint(): number {
 		return GetVehicleWindowTint(this.handle);
-	}
-
-	get model() {
-		return GetEntityModel(this.handle);
 	}
 
 	get colours(): [number, number] {
@@ -110,6 +137,10 @@ export class Vehicle extends Entity {
 		return GetVehicleDoorLockStatus(this.handle) === 2;
 	}
 
+	get owner(): number {
+		return NetworkGetEntityOwner(this.handle);
+	}
+
 	setDoorsLocked(locked: boolean): void {
 		SetVehicleDoorsLocked(this.handle, locked ? 2 : 1);
 	}
@@ -122,7 +153,35 @@ export class Vehicle extends Entity {
 		SetVehicleAlarm(this.handle, active);
 	}
 
-	get owner(): number {
-		return NetworkGetEntityOwner(this.handle);
+	repair(): void {
+		this.runOnOwner("repair");
+	}
+
+	explode(): void {
+		this.runOnOwner("explode");
+	}
+
+	setMod(type: number, index: number): void {
+		this.runOnOwner("setMod", type, index);
+	}
+
+	toggleMod(type: number, on: boolean): void {
+		this.runOnOwner("toggleMod", type, on);
+	}
+
+	setNeon(index: number, on: boolean): void {
+		this.runOnOwner("setNeon", index, on);
+	}
+
+	setNeonColour(r: number, g: number, b: number): void {
+		this.runOnOwner("setNeonColour", r, g, b);
+	}
+
+	setLivery(index: number): void {
+		this.runOnOwner("setLivery", index);
+	}
+
+	setEngineOn(on: boolean): void {
+		this.runOnOwner("setEngineOn", on);
 	}
 }
