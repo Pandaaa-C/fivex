@@ -1,5 +1,6 @@
 import { Vector3 } from "../shared";
 import { BlipPool } from "./managers/blip-pool";
+import { CheckpointPool } from "./managers/checkpoint-pool";
 import { ColshapePool } from "./managers/colshape-pool";
 import { EventManager } from "./managers/event-manager";
 import { ObjectPool } from "./managers/object-pool";
@@ -17,4 +18,5 @@ export class Core {
 	readonly colshapes = new ColshapePool();
 	readonly blips = new BlipPool();
 	readonly pickups = new PickupPool(this.colshapes);
+	readonly checkpoints = new CheckpointPool(this.colshapes);
 }

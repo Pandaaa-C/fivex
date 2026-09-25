@@ -2,6 +2,7 @@ import { Vector3 } from "../shared";
 import { LocalPlayer } from "./entities/local-player";
 import { registerInternalHandlers } from "./internal";
 import { BlipPool } from "./managers/blip-pool";
+import { CheckpointPool } from "./managers/checkpoint-pool";
 import { ColShapePool } from "./managers/colshape-pool";
 import { EventManager } from "./managers/event-manager";
 import { GameObjectPool } from "./managers/object-pool";
@@ -23,6 +24,7 @@ export class Core {
 	readonly colshapes = new ColShapePool();
 	readonly blips = new BlipPool();
 	readonly pickups = new PickupPool();
+	readonly checkpoints = new CheckpointPool();
 
 	constructor() {
 		registerInternalHandlers();
