@@ -5,6 +5,7 @@ import { BlipPool } from "./managers/blip-pool";
 import { CheckpointPool } from "./managers/checkpoint-pool";
 import { ColShapePool } from "./managers/colshape-pool";
 import { EventManager } from "./managers/event-manager";
+import { LabelPool } from "./managers/label-pool";
 import { GameObjectPool } from "./managers/object-pool";
 import { PedPool } from "./managers/ped-pool";
 import { PickupPool } from "./managers/pickup-pool";
@@ -25,6 +26,7 @@ export class Core {
 	readonly blips = new BlipPool();
 	readonly pickups = new PickupPool();
 	readonly checkpoints = new CheckpointPool();
+	readonly labels = new LabelPool();
 
 	constructor() {
 		registerInternalHandlers();
