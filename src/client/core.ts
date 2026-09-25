@@ -6,6 +6,7 @@ import { ColShapePool } from "./managers/colshape-pool";
 import { EventManager } from "./managers/event-manager";
 import { GameObjectPool } from "./managers/object-pool";
 import { PedPool } from "./managers/ped-pool";
+import { PickupPool } from "./managers/pickup-pool";
 import { ClientPlayerPool } from "./managers/player-pool";
 import { VehiclePool } from "./managers/vehicle-pool";
 
@@ -21,6 +22,7 @@ export class Core {
 	readonly objects = new GameObjectPool();
 	readonly colshapes = new ColShapePool();
 	readonly blips = new BlipPool();
+	readonly pickups = new PickupPool();
 
 	constructor() {
 		registerInternalHandlers();
