@@ -21,6 +21,10 @@ export class Vehicle extends Entity {
 		return GetVehicleType(this.handle);
 	}
 
+	setForwardSpeed(speed: number): void {
+		SetVehicleForwardSpeed(this.handle, speed);
+	}
+
 	get driver(): number {
 		return GetPedInVehicleSeat(this.handle, -1);
 	}
@@ -35,6 +39,15 @@ export class Vehicle extends Entity {
 
 	get maxPassengers(): number {
 		return GetVehicleMaxNumberOfPassengers(this.handle);
+	}
+
+	getOccupants(): { seat: number; ped: number }[] {
+		const out: { seat: number; ped: number }[] = [];
+		for (let seat = -1; seat < this.maxPassengers; seat++) {
+			const ped = GetPedInVehicleSeat(this.handle, seat);
+			if (ped !== 0) out.push({ seat, ped });
+		}
+		return out;
 	}
 
 	get bodyHealth(): number {
@@ -69,6 +82,14 @@ export class Vehicle extends Entity {
 		SetVehicleFuelLevel(this.handle, v);
 	}
 
+	get isDamaged(): boolean {
+		return IsVehicleDamaged(this.handle);
+	}
+
+	isDriveable(): boolean {
+		return IsVehicleDriveable(this.handle, false);
+	}
+
 	get engineRunning(): boolean {
 		return GetIsVehicleEngineRunning(this.handle);
 	}
@@ -81,7 +102,11 @@ export class Vehicle extends Entity {
 		SetVehicleFixed(this.handle);
 	}
 
-	setUndriveable(toggle: boolean): void {
+	explode(isAudible = true, isInvisible = false): void {
+		ExplodeVehicle(this.handle, isAudible, isInvisible);
+	}
+
+	setUnDriveable(toggle: boolean): void {
 		SetVehicleUndriveable(this.handle, toggle);
 	}
 
@@ -133,12 +158,40 @@ export class Vehicle extends Entity {
 		SetVehicleColours(this.handle, primary, secondary);
 	}
 
+	get customPrimaryColour(): [number, number, number] {
+		return GetVehicleCustomPrimaryColour(this.handle) as unknown as [
+			number,
+			number,
+			number,
+		];
+	}
+
 	setCustomPrimaryColour(r: number, g: number, b: number): void {
 		SetVehicleCustomPrimaryColour(this.handle, r, g, b);
 	}
 
+	clearCustomPrimaryColour(): void {
+		ClearVehicleCustomPrimaryColour(this.handle);
+	}
+
+	get customSecondaryColour(): [number, number, number] {
+		return GetVehicleCustomSecondaryColour(this.handle) as unknown as [
+			number,
+			number,
+			number,
+		];
+	}
+
 	setCustomSecondaryColour(r: number, g: number, b: number): void {
 		SetVehicleCustomSecondaryColour(this.handle, r, g, b);
+	}
+
+	clearCustomSecondaryColour(): void {
+		ClearVehicleCustomSecondaryColour(this.handle);
+	}
+
+	get extraColours(): [number, number] {
+		return GetVehicleExtraColours(this.handle) as unknown as [number, number];
 	}
 
 	get wheelType(): number {
@@ -177,6 +230,18 @@ export class Vehicle extends Entity {
 		SetVehicleTyreSmokeColor(this.handle, r, g, b);
 	}
 
+	setLights(mode: number): void {
+		SetVehicleLights(this.handle, mode);
+	}
+
+	get sirenOn(): boolean {
+		return IsVehicleSirenOn(this.handle);
+	}
+
+	setSiren(on: boolean): void {
+		SetVehicleSiren(this.handle, on);
+	}
+
 	get locked(): boolean {
 		return GetVehicleDoorLockStatus(this.handle) === 2;
 	}
@@ -189,7 +254,134 @@ export class Vehicle extends Entity {
 		SetVehicleDoorsLockedForAllPlayers(this.handle, locked);
 	}
 
+	setDoorOpen(door: number, loose = false, instantly = false): void {
+		SetVehicleDoorOpen(this.handle, door, loose, instantly);
+	}
+
+	setDoorShut(door: number, instantly = false): void {
+		SetVehicleDoorShut(this.handle, door, instantly);
+	}
+
+	setDoorBroken(door: number, deleteDoor = false): void {
+		SetVehicleDoorBroken(this.handle, door, deleteDoor);
+	}
+
+	rollDownWindow(window: number): void {
+		RollDownWindow(this.handle, window);
+	}
+
+	rollUpWindow(window: number): void {
+		RollUpWindow(this.handle, window);
+	}
+
+	smashWindow(index: number): void {
+		SmashVehicleWindow(this.handle, index);
+	}
+
+	areAllWindowsInTact(): boolean {
+		return AreAllVehicleWindowsIntact(this.handle);
+	}
+
 	setAlarm(active: boolean): void {
 		SetVehicleAlarm(this.handle, active);
+	}
+
+	startAlarm(): void {
+		StartVehicleAlarm(this.handle);
+	}
+
+	doesExtraExist(extra: number): boolean {
+		return DoesExtraExist(this.handle, extra);
+	}
+
+	isExtraTurnedOn(extra: number): boolean {
+		return IsVehicleExtraTurnedOn(this.handle, extra);
+	}
+
+	setExtra(extra: number, enabled: boolean): void {
+		SetVehicleExtra(this.handle, extra, !enabled);
+	}
+
+	addUpsideDownCheck(): void {
+		AddVehicleUpsidedownCheck(this.handle);
+	}
+
+	removeUpsideDownCheck(): void {
+		RemoveVehicleUpsidedownCheck(this.handle);
+	}
+
+	doesHaveRoof(): boolean {
+		return DoesVehicleHaveRoof(this.handle);
+	}
+
+	doesHaveStuckVehicleCheck(): boolean {
+		return DoesVehicleHaveStuckVehicleCheck(this.handle);
+	}
+
+	doesHaveWeapons(): boolean {
+		return DoesVehicleHaveWeapons(this.handle);
+	}
+
+	attachToCargoBob(
+		cargobobHandle: number,
+		boneIndex: number,
+		x: number,
+		y: number,
+		z: number,
+	): void {
+		AttachVehicleToCargobob(cargobobHandle, this.handle, boneIndex, x, y, z);
+	}
+
+	attachToTowTruck(
+		towTruckHandle: number,
+		rear: boolean,
+		hookOffsetX: number,
+		hookOffsetY: number,
+		hookOffsetZ: number,
+	): void {
+		AttachVehicleToTowTruck(
+			towTruckHandle,
+			this.handle,
+			rear,
+			hookOffsetX,
+			hookOffsetY,
+			hookOffsetZ,
+		);
+	}
+
+	attachToTrailer(trailerHandle: number, radius: number): void {
+		AttachVehicleToTrailer(trailerHandle, this.handle, radius);
+	}
+
+	detachFromCargoBob(cargobobHandle: number): void {
+		DetachVehicleFromCargobob(cargobobHandle, this.handle);
+	}
+
+	detachFromTowTruck(towTruckHandle: number): void {
+		DetachVehicleFromTowTruck(towTruckHandle, this.handle);
+	}
+
+	detachFromAnyCargoBob(): void {
+		DetachVehicleFromAnyCargobob(this.handle);
+	}
+
+	detachFromAnyTowTruck(): void {
+		DetachVehicleFromAnyTowTruck(this.handle);
+	}
+
+	detachFromTrailer(): void {
+		DetachVehicleFromTrailer(this.handle);
+	}
+
+	canShuffleSeat(seatIndex: number): boolean {
+		return CanShuffleSeat(this.handle, seatIndex);
+	}
+
+	detachWindScreen(): void {
+		DetachVehicleWindscreen(this.handle);
+	}
+
+	disableImpactExplosionActivation(active: boolean): void {
+		DisableVehicleImpactExplosionActivation(this.handle, active);
 	}
 }
