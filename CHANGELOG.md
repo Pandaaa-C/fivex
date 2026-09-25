@@ -1,5 +1,11 @@
 # @panda0day/fivex
 
+## 0.4.0
+
+### Minor Changes
+
+- f4b99ff: added world objects
+
 ## 0.3.1
 
 ### Patch Changes
